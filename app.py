@@ -95,54 +95,14 @@ app.layout = \
             html.Div(style={'height': '150px', 'width': '100%', 'clear': 'both'}),
             
             # Figure 2
-            html.Div(children=[
-                html.H3('Comparatif des profils démographiques des nominés et des gagnants', 
-                       className='figure-title'),
-
-                html.Div([
-                    dcc.Tabs(
-                        id='tabs_fig_2',
-                        value='Race or Ethnicity',
-                        children=[
-                            dcc.Tab(label='Ethnie', value='Race or Ethnicity', className='dash-tab', selected_className='dash-tab--selected'),
-                            dcc.Tab(label='Genre', value='Gender', className='dash-tab', selected_className='dash-tab--selected'),
-                            dcc.Tab(label='Religion', value='Religion', className='dash-tab', selected_className='dash-tab--selected'),
-                            dcc.Tab(label='Âge', value='Age', className='dash-tab', selected_className='dash-tab--selected'),
-                            dcc.Tab(label='Orientation', value='Sexual orientation', className='dash-tab', selected_className='dash-tab--selected')
-                        ],
-                        className='dash-tabs'
-                    ),
-
-                    # Contrôles pour la figure 2
-                    html.Div([
-                        dcc.RadioItems(
-                            id='winner-filter_fig_2',
-                            #options=[
-                           #     {'label': 'Gagnants seulement', 'value': 'winners'},
-                                #{'label': 'Gagnants et nominés', 'value': 'all'}
-                            #],
-                            value='winners',
-                            inline=True,
-                            className='radio-filter'
-                        )
-                    ], style={'margin': '10px 0'}),
-
-                    # Placeholder pour la figure 2
-                    dcc.Graph(id='figure-2-graph', style={'width': '100%'}),
-
-                    # Slider pour la plage d'années
-                    dcc.RangeSlider(
-                        id='year-slider_fig_2',
-                        min=1928,
-                        max=2025,
-                        step=1,
-                        marks={i: '{}'.format(i) for i in range(1928, 2025, 10)},
-                        value=intervalle_defaut,
-                        allowCross=False
-                    )
-                ], style={'width': '100%', 'margin': '0 auto'}),
-            ],
-            style={'margin': '0 auto', 'width': '100%', 'fontFamily': FONT, 'display': 'block', 'textAlign': 'center'}
+            create_figure_section(
+                figure_id=2,
+                title='Comparaison des profils démographiques des nominés et des gagnants.',
+                graph_id='figure-2-graph',
+                has_checklist=True,
+                has_control_elements=False,
+                intervalle=intervalle_defaut,
+                font=FONT
             ),
             
             # Espace entre les figures
@@ -368,15 +328,28 @@ def update_stacked_area_chart(year_range, category, selected_categories, winner_
     return fig
 
 @app.callback(
+    Output('category-checklist_fig_2', 'options'),
+    Output('category-checklist_fig_2', 'value'),
+    Input('year-slider_fig_2', 'value'),
+    Input('tabs_fig_2', 'value'),
+)
+def update_category_dropdown_fig_2(year_range, category):
+    df, distribution_dict, options, selected = get_filtered_distribution(
+        year_range, category, "all", include_other=True
+    )
+    return options, selected
+
+@app.callback(
     Output('figure-2-graph', 'figure'),
     Input('tabs_fig_2', 'value'),
-    Input('winner-filter_fig_2', 'value'),
     Input('year-slider_fig_2', 'value'),
+    Input('category-checklist_fig_2', 'value')
 )
-def update_sankey_chart(demographic_column, winner_filter, year_range):
-    is_winner = None if winner_filter == 'all' else True
+def update_sankey_chart(demographic_column, year_range, selected_categories):
+    #is_winner = None if winner_filter == 'all' else True
     df = dataloader.filter_data(year_range[0], year_range[1], is_winner=None)  # on prend tout pour comparer
-
+    if selected_categories:
+        df = df[df[demographic_column].isin(selected_categories)]
     sankey = figure_2.SankeyDemographicChart()
     return sankey.plot_sankey_chart(df, demographic_column)
 

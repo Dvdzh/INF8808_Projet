@@ -1,7 +1,7 @@
 from dash import html, dcc
 
 
-def create_figure_section(figure_id, title, graph_id, has_checklist=True, intervalle=[1928, 2025], font='Jost'):
+def create_figure_section(figure_id, title, graph_id, has_checklist=True, has_control_elements=True,intervalle=[1928, 2025], font='Jost'):
     """
     Génère un blueprint commun pour toutes les figures
     
@@ -87,7 +87,10 @@ def create_figure_section(figure_id, title, graph_id, has_checklist=True, interv
     ], className='control-item', style={'padding': '10px'}) if figure_id == 3 else None
     
     # Assembler les contrôles actifs dans une liste
-    control_elements = [winners_filter]
+    if has_control_elements:
+        control_elements = [winners_filter]
+    else:
+        control_elements = []
     if checklist:
         control_elements.append(checklist)
     control_elements.append(year_slider)
