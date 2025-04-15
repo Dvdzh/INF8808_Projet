@@ -34,7 +34,7 @@ class SankeyDemographicChart:
         # On ordonne les catégories par nombre de nominés décroissant
         sorted_categories = list(nominee_counts.index)
         # On prend les 5 premières
-        top_categories = sorted_categories[:4]
+        top_categories = sorted_categories[:5]
         # Si d'autres catégories existent, on va les regrouper dans "Other"
         if len(sorted_categories) > 5:
             new_categories = top_categories + ["Other"]
