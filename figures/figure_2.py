@@ -15,7 +15,7 @@ class SankeyDemographicChart:
     def __init__(self):
         pass
 
-    def plot_sankey_chart(self, df, demographic_column):
+    def plot_sankey_chart(self, df, demographic_column, height=700):
         """
         Sankey Chart montrant la répartition des nominés vers gagnants par profil démographique.
         Seules les 5 premières catégories (selon le nombre de nominés) sont affichées individuellement,
@@ -151,6 +151,7 @@ class SankeyDemographicChart:
         )])
 
         fig.update_layout(
+            height=height,
             font=dict(family="Jost", size=14),
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',

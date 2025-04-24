@@ -13,11 +13,10 @@ import figures.figure_2 as figure_2
 from helper import DataLoader
 from layout import create_figure_section
 
-print('hello')
+print("\nLancement de l'application Dash...")
 
 FONT = 'Jost'
 
-hauteur_default_figure = 700
 
 app = dash.Dash(__name__, 
                 meta_tags=[
@@ -64,6 +63,52 @@ logo_credit = html.A(
 
 intervalle_defaut = [1928, 2025]
 
+hauteur_default_figure = 700
+
+espace_entre_figures = 150
+
+
+# Textes pour les explications (**xxx** pour mettre le texte en gras)
+txt_fig1 = """Dans ce graphique, **chacun des points représente un gagnant ou un nominé aux Oscars**. En passant en survol sur chacun de ces points, un encadré vous indique à qui est attribué ce point. 
+
+*Avez-vous réussi à trouver la première femme noire à avoir reçu un oscar ?*
+
+Si nous analysons les résultats de l’onglet **Ethnie**, nous voyons la distribution des gagnants selon les groupes ethniques. Sur les 416 gagnants, **seulement 50 font partie de la population non-blanche**. Ce qui équivaut à 12% des gagnants. Étant donné que 40% de la population totale des État-Unis est non-blanche (selon Wikipédia), on peut estimer que les gagnants des Oscars ne représentent pas bien les gens de la diversité culturelle. 
+
+Quand on s’intéresse à l'orientation sexuelle, on constate que 57 gagnants ne sont pas hétérosexuels. Cela donne un pourcentage de 13.7% gagnants. Selon le Williams Institute, 5,5% des adultes vivant aux États-Unis s’identifient comme LGBT. Le pourcentage de 13.7% de nos résultats est surement dû au grand nombre d’orientation sexuelle inconnue qui vient probablement fausser nos données.
+"""
+
+txt_fig2 = """Ce graphique s’intéresse à la relation nominée et gagnants. Nous voulions savoir si tous les nominés quelle que soit leur ethnie, leur âge, leur genre, leur religion ou leur orientation sexuelle, ont les mêmes chance de gagner. 
+
+Pour chaque prix, il y a habituellement 5 nominés et un seul gagnant. **Les chances de gagner sont donc de 20%.**
+
+Par l’entremise de ce tableau, nous pouvons constater que **ce pourcentage est respecté à travers la plupart des catégories.** Il ne semble pas y avoir de biais qui pousse à favoriser certains nominés par rapport à d’autres. Par contre, cette figure (et les autres) montrent une réelle disparité dans les nominations, qui se repercute dans les gagnants.
+"""
+
+txt_fig3 = """ Ce graphique montre l’évolution de la diversité au fil des ans. Le **nombre cumulé de gagnants (ou de nominés)** depuis la création des Oscars est représenté pour chaque catégorie. Un bouton permet de passer à une échelle logarithmique pour mieux visualiser les différences entre les catégories.
+
+En passant la souris sur les lignes, vous pouvez voir plus de détails pour une certaine cérémonie ainsi que quelques informations supplémentaires sur les gagnants ou les nominés.
+
+Il est intéressant de noter que la diversité a augmenté au fil des ans, mais il reste encore un long chemin à parcourir. En effet, **la majorité des gagnants sont toujours blancs et hétérosexuels**.
+
+On peut aussi voir que les normes d'inclusivité mise en place en 2015 en réaction au mouvement *#OscarSoWhite* ont l'air d'avoir un **léger impact** sur la diversité des gagnants. En effet, la tendance à la hausse de la diversité semble s'accélérer dans les dernières années. *Ces tendeances sont plus facilement visibles dans le graphique suivant.*
+"""
+
+txt_fig4 = """Ce graphique est complémentaire au précédent. Il montre les proportions de nominés et de gagnants par catégorie. Il est possible de changer la granularité temporelle pour voir les données par année, par 5 ans ou par décennie.
+
+Il permet de se rendre compte des changements de tendances au fil des ans. Par exemple, on peut voir que la **diversité éthnique a clairement augmenté depuis le début des années 2000.**
+
+Aussi, on peut voir que la **diversité de genre a aussi augmenté, mais pas autant que l'ethnie.** En effet, en utilisant la granularité décennale, on peut voir que le nombre de femmes gagnantes a augmenté pour se rapprocher de 50% des gagnants. Il faut bien noter que la différence de genre ne se fait que dans la catégorie *Meilleur réalisateur/trice* car les autres catégories sont genrées.
+"""
+
+# Texte pour la conclusion
+txt_conclusion = """À travers de tous ces tableaux, nous avons pu constater que la controverse #OscarSowhite était fondée. Par le passé, les gagnants et nominés des Oscars ont été en prédominance des personnes blanches.
+
+De nos jours, cette tendance semble tranquillement se renverser à cause de la création de normes d’inclusivité et de notre société plus inclusive à la diversité. Il faut également se demander si la discrimination dont a été accusé les Oscars est vraiment un problème des Oscars ou de l’industrie de cinéma en entier. 
+
+Malgré ces progrès, **le chemin vers une représentation équitable reste long**. Notre visualisation souligne l'importance de continuer à promouvoir la diversité et l'inclusion dans l'industrie cinématographique.
+"""
+
 app.layout = \
     html.Div([
 
@@ -84,55 +129,71 @@ app.layout = \
             # Figure 1
             create_figure_section(
                 figure_id=1,
-                title='Lors des 97 cérémonies des Oscars, il y a eu 416 gagnants. Voici leur distribution.',
+                title='Portrait des gagnants: Qui sont les lauréats des Oscars?',
                 graph_id='waffle-chart',
                 has_checklist=True,
                 intervalle=intervalle_defaut,
-                font=FONT
+                font=FONT,
+                explanation_text=txt_fig1,
             ),
             
             # Espace entre les figures
-            html.Div(style={'height': '150px', 'width': '100%', 'clear': 'both'}),
+            html.Div(style={'height': f'{espace_entre_figures}px', 'width': '100%', 'clear': 'both'}),
             
-            # Figure 2
+            # Figure 2 - Mise à jour du titre
             create_figure_section(
                 figure_id=2,
-                title='Comparaison des profils démographiques des nominés et des gagnants.',
+                title='Des chances égales? Le parcours des nominés vers la victoire',
                 graph_id='figure-2-graph',
                 has_checklist=True,
                 has_control_elements=False,
                 intervalle=intervalle_defaut,
-                font=FONT
+                font=FONT,
+                explanation_text=txt_fig2
             ),
             
             # Espace entre les figures
-            html.Div(style={'height': '150px', 'width': '100%', 'clear': 'both'}),
+            html.Div(style={'height': f'{espace_entre_figures}px', 'width': '100%', 'clear': 'both'}),
 
             # Figure 3
             create_figure_section(
                 figure_id=3,
-                title='Évolution de la diversité au fil des ans',
+                title='La progression à travers le temps: L\'évolution de la diversité aux Oscars',
                 graph_id='line-chart',
                 has_checklist=True,
                 intervalle=intervalle_defaut,
-                font=FONT
+                font=FONT,
+                explanation_text=txt_fig3
             ),
             
             # Espace entre les figures
-            html.Div(style={'height': '150px', 'width': '100%', 'clear': 'both'}),
+            html.Div(style={'height': f'{espace_entre_figures}px', 'width': '100%', 'clear': 'both'}),
             
             # Figure 4
             create_figure_section(
                 figure_id=4,
-                title='L\'évolution de la diversité aux Oscars à travers les décennies.',
+                title='Les proportions changeantes: La transformation des Oscars au fil des décennies',
                 graph_id='stacked-area-chart',
                 has_checklist=True,
                 intervalle=intervalle_defaut,
-                font=FONT
+                font=FONT,
+                explanation_text=txt_fig4
             ),
             
             # Espace après la dernière figure
-            html.Div(style={'height': '150px', 'width': '100%', 'clear': 'both'}),
+            html.Div(style={'height': f'{espace_entre_figures}px', 'width': '100%', 'clear': 'both'}),
+
+            
+            # Titre de la figure
+            html.H3("Conclusion", className='figure-title'),
+            # Section de conclusion
+            html.Div([
+                dcc.Markdown(txt_conclusion, className='figure-explanation')
+            ], style={'width': '100%', 'margin': '0 auto 50px auto'}),
+            
+            # Espace final
+            html.Div(style={'height': f'50px', 'width': '100%', 'clear': 'both'}),
+
         ],
         style={'width': '90%', 'margin': '0 auto', 'fontFamily': FONT, 'display': 'flex', 'flexDirection': 'column'}
         ),
@@ -351,7 +412,7 @@ def update_sankey_chart(demographic_column, year_range, selected_categories):
     if selected_categories:
         df = df[df[demographic_column].isin(selected_categories)]
     sankey = figure_2.SankeyDemographicChart()
-    return sankey.plot_sankey_chart(df, demographic_column)
+    return sankey.plot_sankey_chart(df, demographic_column, height=hauteur_default_figure)
 
 
 if __name__ == '__main__':

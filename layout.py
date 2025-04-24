@@ -1,7 +1,7 @@
 from dash import html, dcc
 
 
-def create_figure_section(figure_id, title, graph_id, has_checklist=True, has_control_elements=True,intervalle=[1928, 2025], font='Jost'):
+def create_figure_section(figure_id, title, graph_id, has_checklist=True, has_control_elements=True, intervalle=[1928, 2025], font='Jost', explanation_text=None):
     """
     Génère un blueprint commun pour toutes les figures
     
@@ -10,6 +10,10 @@ def create_figure_section(figure_id, title, graph_id, has_checklist=True, has_co
         title: Titre à afficher pour la figure
         graph_id: ID du graphique Dash
         has_checklist: Si True, inclut une checklist pour les catégories
+        has_control_elements: Si True, inclut les éléments de contrôle
+        intervalle: Intervalle d'années pour le slider
+        font: Police de caractères à utiliser
+        explanation_text: Texte explicatif pour la figure (optionnel)
         
     Returns:
         Une section de figure complète avec les contrôles
@@ -110,6 +114,9 @@ def create_figure_section(figure_id, title, graph_id, has_checklist=True, has_co
     return html.Div(children=[
         # Titre de la figure
         html.H3(title, className='figure-title'),
+        
+        # Explication de la figure (si fournie) - Remplacer html.P par dcc.Markdown
+        dcc.Markdown(explanation_text, className='figure-explanation') if explanation_text else None,
 
         # Contenu principal
         html.Div([
