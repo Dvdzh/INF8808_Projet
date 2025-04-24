@@ -11,15 +11,11 @@
     --color-8: #cccccc;
 }
 
-
 body {
-    
-    
     background-color: #D9C58A;
     color: #0000;
     margin: 0;
     height: 100vh;
-
 }
 
 header {
@@ -31,17 +27,15 @@ header {
     height: 639px;
     display: flex;
     justify-content: center;
-      
-    
 }
 
 input[type=radio] {
     accent-color: black;
-  }
+}
 
 input[type=checkbox] {
     accent-color: black;
-  }
+}
 
 .rc-slider-dot.rc-slider-dot-active {
     border-color: black !important;  
@@ -78,47 +72,46 @@ main {
 
 div.texte-entete {
     display: flex;
-    flex-direction: column;   /* Aligner les éléments verticalement en colonne */
-    justify-content: center;  /* Centrer horizontalement */
-   padding: 20px;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
 }
 
 h1 {
     color: #000;
-font-family: Jost;
-font-size: 96px;
-font-style: normal;
-font-weight: 400;
-line-height: 1;
-letter-spacing: 53.76px;
-text-align: left;
-margin: 0;
-padding: 0;
+    font-family: Jost;
+    font-size: 96px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 53.76px;
+    text-align: left;
+    margin: 0;
+    padding: 0;
 }
 
 h2 {
-color: #000;
-text-align: left;
-font-family: Jost;
-font-size: 28px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
-letter-spacing: 6.44px;
-text-transform: uppercase;
-margin: 0;
-padding: 0;
+    color: #000;
+    text-align: left;
+    font-family: Jost;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 6.44px;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0;
 }
 
-
 h3 {
-font-family: Jost;
-color: #000;
-font-size: 22px;
-font-style: normal;
-font-weight: 400;
-line-height: 106.182%; /* 23.36px */
-letter-spacing: 1.76px;
+    font-family: Jost;
+    color: #000;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 106.182%;
+    letter-spacing: 1.76px;
 }
 
 hr {
@@ -128,12 +121,12 @@ hr {
 
 p {
     color: #000;
-font-family: Roboto;
-font-size: 16px;
-font-style: normal;
-font-weight: 400;
-line-height: 131.187%; /* 20.99px */
-letter-spacing: 0.48px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 131.187%;
+    letter-spacing: 0.48px;
 }
 
 button {
@@ -149,8 +142,8 @@ button {
 }
 
 button:hover, button:active {
-	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
-	background-color:#f6f6f6;
+    background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+    background-color:#f6f6f6;
 }
 
 .content {
@@ -200,11 +193,11 @@ button:hover, button:active {
 }
 
 .dash-tabs {
-    background-color: #f0f0f0; /* Couleur d'arrière-plan pour le conteneur des onglets */
+    background-color: #f0f0f0;
 }
 
 .dash-tab {
-    color: black; /* Couleur de texte par défaut pour les onglets */
+    color: black;
     font-family: Jost, sans-serif;
     font-size: 16px;
     padding: 10px;
@@ -213,13 +206,13 @@ button:hover, button:active {
 }
 
 .dash-tab--selected {
-    color: white; /* Couleur de texte pour l'onglet sélectionné */
-    background-color: black; /* Couleur d'arrière-plan pour l'onglet sélectionné */
+    color: white;
+    background-color: black;
     font-weight: bold;
 }
 
 .dash-checklist label {
-    color: black; /* Couleur de texte pour les étiquettes de la liste à cocher */
+    color: black;
     font-family: Jost, sans-serif;
     font-size: 14px;
 }
@@ -232,11 +225,9 @@ button:hover, button:active {
     font-size: 45px;
     font-weight: 500;
     letter-spacing: 2px;
-    /* border-bottom: 2px solid rgba(0, 0, 0, 0.2); */
     max-width: 90%;
 }
 
-/* Style pour les textes d'explication des figures */
 .figure-explanation {
     margin: 0 auto 20px auto;
     font-family: Jost, sans-serif;
@@ -249,15 +240,13 @@ button:hover, button:active {
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 5px;
-    white-space: pre-line;  /* Préserve les sauts de ligne */
+    white-space: pre-line;
 }
 
-/* Rendre les éléments en gras un peu plus visibles */
 .figure-explanation strong {
     font-weight: 600;
     color: #000;
 }
-
 
 .radio-filter {
     margin: 10px 0;
@@ -270,7 +259,6 @@ button:hover, button:active {
     font-size: 14px;
 }
 
-/* Styles pour les contrôles responsive */
 .controls-container {
     display: flex;
     flex-direction: row;
@@ -285,13 +273,11 @@ button:hover, button:active {
 }
 
 .year-slider {
-    flex: 2;  /* Le slider d'années prend plus d'espace */
+    flex: 2;
     min-width: 300px;
 }
 
-/* Media queries pour l'adaptabilité */
 @media screen and (max-width: 1200px) {
-    /* Styles pour les écrans jusqu'à 1200px de large */
     .controls-container {
         flex-direction: column;
         align-items: stretch;
@@ -302,25 +288,21 @@ button:hover, button:active {
         margin-bottom: 15px;
     }
     
-    /* Ajuster la taille des onglets */
     .dash-tab {
         font-size: 14px;
         padding: 8px;
     }
     
-    /* Ajuster la figure-title */
     .figure-title {
         font-size: 28px;
         margin: 30px auto 20px auto;
     }
 }
 
-/* Styles spécifiques pour les sliders */
 .rc-slider {
     width: 100% !important;
 }
 
-/* Améliorer l'affichage des checkboxes */
 .dash-checklist {
     display: flex;
     flex-wrap: wrap;

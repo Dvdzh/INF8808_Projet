@@ -4,8 +4,7 @@ import plotly.colors as pc
 import plotly.express as px
 import numpy as np
 
-    
-# Définition des couleurs personnalisées pour les marqueurs dans le diagramme en gaufre
+# Couleurs personnalisées pour les marqueurs dans le diagramme en gaufre
 CUSTOM_COLORS = [
     '#FFFFFF',  # Blanc
     '#000000',  # Noir
@@ -61,15 +60,9 @@ class DataLoader():
         """ 
         Calcule la distribution des valeurs uniques pour chaque colonne.
         
-        Exemple de résultat attendu:
-        (
-        {'Straight': 246,
-        'Na': 11,
-        'Matter of Dispute': 7,
-        'Gay': 6,
-        'Bisexual': 3,
-        'Lesbian': 2},
-        275)
+        Returns:
+            tuple: (distribution_dict, total) où distribution_dict contient les comptages 
+                  pour chaque valeur unique et total est le nombre total d'enregistrements
         """
         df = data.copy()    
         df.drop(columns=['Category', 'Name', 'Film', 'Year_Ceremony', 'Win_Oscar?'], inplace=True)
@@ -86,8 +79,7 @@ class DataLoader():
     
     def get_yearly_distribution(self, data, selected_categories=None, time_granularity=1):
         """
-        Fonction qui retourne un dictionnaire contenant la distribution des valeurs uniques pour chaque année ou période.
-        En entrée elle prend un dataframe contenant la colonne étudiée ainsi que la colonne Year_Ceremony.
+        Fonction qui retourne la distribution des valeurs uniques pour chaque année ou période.
         
         Paramètres:
         -----------
@@ -108,7 +100,6 @@ class DataLoader():
         # Appliquer la granularité temporelle
         if time_granularity > 1:
             # Arrondir les années à la granularité spécifiée
-            # Par exemple: pour time_granularity=10, 1928 -> 1920, 1934 -> 1930
             df['Year_Ceremony'] = (df['Year_Ceremony'] // time_granularity) * time_granularity
         
         df = df.groupby(['Year_Ceremony', df.columns[1]]).size().unstack(fill_value=0)
@@ -118,7 +109,7 @@ class DataLoader():
         # Trier par année
         distribution_dict = dict(sorted(distribution_dict.items(), key=lambda item: item[0]))
 
-        # Si nécessaire, on ajoute une catégorie "Autre" qui contient la somme des autres catégories
+        # Gestion de la catégorie "Other" si nécessaire
         need_other = False
         if selected_categories is not None:
             if 'Other' in selected_categories:
@@ -136,13 +127,12 @@ class DataLoader():
 
     def get_cumulative_yearly_distribution(self, data, selected_categories=None, time_granularity=1):
         """
-        Fonction qui retourne un dictionnaire contenant la distribution cumulative des valeurs 
-        pour chaque année ou période.
+        Fonction qui retourne la distribution cumulative des valeurs pour chaque année ou période.
         
         Paramètres:
         -----------
         data : pandas.DataFrame
-            DataFrame contenant les données à analyser avec les colonnes Year_Ceremony et la catégorie étudiée
+            DataFrame contenant les données avec les colonnes Year_Ceremony et la catégorie étudiée
         selected_categories : list, optionnel
             Liste des catégories à inclure. Si 'Other' est présent, les catégories non sélectionnées seront regroupées
         time_granularity : int, par défaut=1
@@ -153,7 +143,7 @@ class DataLoader():
         dict
             Dictionnaire de la forme {période: {catégorie1: valeur_cumulative1, catégorie2: valeur_cumulative2, ...}}
         """
-        # D'abord, obtenir la distribution non-cumulative année par année
+        # Obtenir la distribution non-cumulative année par année
         yearly_distribution = self.get_yearly_distribution(data, selected_categories, time_granularity)
         
         # Convertir en dataframe pour faciliter le calcul cumulatif
@@ -177,20 +167,9 @@ class DataLoader():
         return cumulative_dict
 
 
-# def generate_color_dict():
-#     return {
-#         'White': '#FFFFFF',   # Blanc
-#         'Black': '#000000',   # Noir
-#         'Asian': '#BE8F4D',   # Marron
-#         'Hispanic': '#FFDA6E', # Jaune
-#         'Other': '#C56D65',   # Rougeâtre
-#         'Mixed': '#593A1E'    # Marron foncé
-#     }
-
-
 def generate_color_dict(identifiers=None, n_colors=None, colorscale_name='Set1'):
     """
-    Génère un dictionnaire associant des identifiants à des couleurs à partir d'une échelle de couleurs Plotly
+    Génère un dictionnaire associant des identifiants à des couleurs
     
     Paramètres:
     -----------
@@ -200,9 +179,7 @@ def generate_color_dict(identifiers=None, n_colors=None, colorscale_name='Set1')
         Nombre de couleurs à générer si les identifiants ne sont pas fournis
     colorscale_name : str, par défaut='Set1'
         Nom de l'échelle de couleurs Plotly à utiliser
-        Options incluent: 'Plotly', 'D3', 'G10', 'T10', 'Alphabet', 
-        'Dark24', 'Light24', 'Set1', 'Set2', 'Set3', 'Pastel1', 'Pastel2'
-    
+        
     Retourne:
     --------
     dict
@@ -221,17 +198,17 @@ def generate_color_dict(identifiers=None, n_colors=None, colorscale_name='Set1')
                               'Dark24', 'Light24', 'Set1', 'Set2', 'Set3', 
                               'Pastel1', 'Pastel2']:
             colors = getattr(pc.qualitative, colorscale_name)
-            # Répéter les couleurs si nous avons besoin de plus que disponibles
+            # Répéter les couleurs si nécessaire
             colors = (colors * (n_colors // len(colors) + 1))[:n_colors]
         else:
-            # Pour les échelles de couleurs continues, échantillonner n_colors
+            # Pour les échelles de couleurs continues
             colorscale = getattr(px.colors.sequential, colorscale_name, None)
             if colorscale is None:
                 colorscale = getattr(px.colors.diverging, colorscale_name, None)
             if colorscale is None:
                 colorscale = getattr(px.colors.cyclical, colorscale_name, None)
             if colorscale is None:
-                # Par défaut, utiliser l'échelle de couleurs continue intégrée et l'échantillonner
+                # Utiliser l'échelle de couleurs continue par défaut
                 color_positions = np.linspace(0, 1, n_colors)
                 colorscale = px.colors.sample_colorscale(colorscale_name, color_positions)
                 colors = colorscale
@@ -244,11 +221,11 @@ def generate_color_dict(identifiers=None, n_colors=None, colorscale_name='Set1')
                     indices = np.linspace(0, len(colorscale)-1, n_colors-len(colors)).astype(int)
                     colors.extend([colorscale[i] for i in indices])
     except (AttributeError, ValueError):
-        # Repli sur l'échelle de couleurs par défaut
+        # Utiliser l'échelle Viridis par défaut
         color_positions = np.linspace(0, 1, n_colors)
         colors = px.colors.sample_colorscale("Viridis", color_positions)
     
-    # Créer la correspondance
+    # Créer la correspondance identifiants-couleurs
     if identifiers is not None:
         color_dict = {id_val: colors[i % len(colors)] for i, id_val in enumerate(identifiers)}
     else:

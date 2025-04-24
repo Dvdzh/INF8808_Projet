@@ -1,9 +1,6 @@
 import pandas as pd
 import plotly.graph_objects as go
-import numpy as np
 from helper import TRANSPARENT, generate_color_dict
-
-# Line Chart Showing the Evolution of a Category Over Time
 
 class LineChart():
     def __init__(self):
@@ -11,52 +8,47 @@ class LineChart():
 
     def plot_line_chart(self, distribution_dict, category, selected_categories, df, cumulative=True, scale_type='linear', height=700):
         """
-        Cette fonction génère un graphique en lignes montrant l'évolution d'une catégorie au fil du temps.
+        Génère un graphique en lignes montrant l'évolution d'une catégorie au fil du temps.
         
-        Paramètres :
-        - distribution_dict : dictionnaire des distributions par année
-        - category : la colonne de regroupement (ex. 'Ethnicity', 'Gender', etc.)
-        - selected_categories : liste des catégories sélectionnées à afficher
-        - df : DataFrame contenant les colonnes 'Year_Ceremony', category, 'Name', 'Film'
-        - cumulative : booléen indiquant si les données doivent être affichées de manière cumulative
-        - scale_type : type d'échelle pour l'axe Y ('linear' ou 'log')
-        - height : hauteur du graphique en pixels (par défaut: 700)
-
-        Retourne : 
-        - figure Plotly de type line chart
+        Args:
+            distribution_dict: Dictionnaire des distributions par année
+            category: Colonne de regroupement (ex. 'Ethnicity', 'Gender', etc.)
+            selected_categories: Liste des catégories à afficher
+            df: DataFrame contenant les données complètes
+            cumulative: Si True, affiche les données de manière cumulative
+            scale_type: Type d'échelle pour l'axe Y ('linear' ou 'log')
+            height: Hauteur du graphique en pixels
+            
+        Returns:
+            Figure Plotly
         """
-        # Créer la figure
         fig = go.Figure()
         
-        # Générer un dictionnaire de couleurs pour les catégories
+        # Couleurs pour les catégories
         color_dict = generate_color_dict(selected_categories, colorscale_name='Oranges')
         
-        # Pour chaque catégorie sélectionnée, tracer la courbe
+        # Tracer les courbes pour chaque catégorie
         for i, category_name in enumerate(selected_categories):
-            # Pour les données agrégées par année
             x_years = sorted(distribution_dict.keys())
             y_values = [distribution_dict[year].get(category_name, 0) for year in x_years]
             
-            # Filtrer le DataFrame pour la catégorie spécifique
+            # Données pour les infobulles
             filtered_df = df[df[category] == category_name]
-            
-            # Créer les textes personnalisés pour le hover
             hover_texts = []
+            
             for year in x_years:
-                # Compter le nombre d'occurrences pour cette catégorie et cette année
+                # Comptage annuel vs cumulatif
                 year_count = distribution_dict[year].get(category_name, 0)
-                
-                # Si nous utilisons des données cumulatives, nous ne voulons montrer que les nouvelles entrées
                 annual_count = year_count
+                
                 if cumulative and year > min(x_years):
                     previous_year_index = x_years.index(year) - 1
                     previous_year = x_years[previous_year_index]
                     annual_count = year_count - distribution_dict[previous_year].get(category_name, 0)
                 
-                # Pour cette année et cette catégorie, trouver les noms et films
                 year_data = filtered_df[filtered_df['Year_Ceremony'] == year]
                 
-                # Créer le texte du hover
+                # Texte pour l'infobulle
                 text = f"<b>{category_name}</b><br>"
                 text += f"Année: {year}<br>"
                 
@@ -66,10 +58,9 @@ class LineChart():
                 else:
                     text += f"Nombre cette année: {annual_count}<br>"
                 
-                # Si nous avons des données détaillées pour cette année
+                # Exemples de gagnants/nominés
                 if not year_data.empty and annual_count > 0:
                     text += "<br>Exemples:<br>"
-                    # Limiter à 3 exemples maximum
                     for _, entry in year_data.head(3).iterrows():
                         text += f"• {entry['Name']} ({entry['Film']})<br>"
                     
@@ -78,7 +69,7 @@ class LineChart():
                 
                 hover_texts.append(text)
 
-            # Ajouter la trace à la figure avec la couleur correspondante
+            # Ajouter la trace au graphique
             fig.add_trace(go.Scatter(
                 x=x_years,
                 y=y_values,
@@ -90,7 +81,7 @@ class LineChart():
                 hovertext=hover_texts
             ))
 
-        # Déterminer si la ligne verticale à 2015 doit être affichée
+        # Ligne verticale pour marquer 2015 (si dans l'intervalle)
         shapes = []
         if x_years and min(x_years) <= 2015 <= max(x_years):
             shapes.append(
@@ -110,14 +101,13 @@ class LineChart():
                 )
             )
 
-        # Mettre à jour le layout
+        # Configuration du graphique
         fig.update_layout(
-            shapes=shapes,  # Utiliser la liste de formes conditionnelle
-            # Configuration générale
+            shapes=shapes,
             autosize=True,
-            height=height,  # Ajout de la hauteur spécifiée
-            paper_bgcolor=TRANSPARENT,  # Fond transparent
-            plot_bgcolor=TRANSPARENT,   # Fond du graphique transparent
+            height=height,
+            paper_bgcolor=TRANSPARENT,
+            plot_bgcolor=TRANSPARENT,
             xaxis=dict(
                 title={'text': 'Année', 'font': {'family': 'Jost', 'size': 16}},
                 showgrid=False,
@@ -133,7 +123,7 @@ class LineChart():
                 showgrid=True,
                 gridcolor='rgba(0,0,0,0.1)',
                 tickfont={'family': 'Jost'},
-                type=scale_type  # Définir le type d'échelle (linéaire ou logarithmique)
+                type=scale_type
             ),
             legend_title={
                 'text': 'Catégories',

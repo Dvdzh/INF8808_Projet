@@ -3,7 +3,7 @@ import dash
 from dash import dcc
 from dash import html
 from dash.dependencies import Input, Output
-import json  # Ajout de l'import json
+import json
 
 import figures.figure_1 as figure_1
 import figures.figure_3 as figure_3
@@ -23,13 +23,12 @@ app = dash.Dash(__name__,
                     {"name": "viewport", "content": "width=device-width, initial-scale=1"},
                     {"name": "description", "content": "Analyse de la diversité aux Oscars"}
                 ],
-                # Ajout des balises pour configurer le favicon
                 update_title=None)
 
 # Modification du titre de l'onglet du navigateur
 app.title = "Oscars - Analyse de diversité"
 
-# Ajout du favicon dans le layout
+# Configuration du favicon dans le layout
 app.index_string = '''
 <!DOCTYPE html>
 <html>
@@ -68,24 +67,24 @@ hauteur_default_figure = 700
 espace_entre_figures = 150
 
 
-# Textes pour les explications (**xxx** pour mettre le texte en gras)
+# Textes pour les explications (syntaxe Markdown: **texte** pour gras)
 txt_fig1 = """Dans ce graphique, **chacun des points représente un gagnant ou un nominé aux Oscars**. En passant en survol sur chacun de ces points, un encadré vous indique à qui est attribué ce point. 
 
 *Avez-vous réussi à trouver la première femme noire à avoir reçu un oscar ?*
 
-Si nous analysons les résultats de l’onglet **Ethnie**, nous voyons la distribution des gagnants selon les groupes ethniques. Sur les 416 gagnants, **seulement 50 font partie de la population non-blanche**. Ce qui équivaut à 12% des gagnants. Étant donné que 40% de la population totale des État-Unis est non-blanche (selon Wikipédia), on peut estimer que les gagnants des Oscars ne représentent pas bien les gens de la diversité culturelle. 
+Si nous analysons les résultats de l'onglet **Ethnie**, nous voyons la distribution des gagnants selon les groupes ethniques. Sur les 416 gagnants, **seulement 50 font partie de la population non-blanche**. Ce qui équivaut à 12% des gagnants. Étant donné que 40% de la population totale des État-Unis est non-blanche (selon Wikipédia), on peut estimer que les gagnants des Oscars ne représentent pas bien les gens de la diversité culturelle. 
 
-Quand on s’intéresse à l'orientation sexuelle, on constate que 57 gagnants ne sont pas hétérosexuels. Cela donne un pourcentage de 13.7% gagnants. Selon le Williams Institute, 5,5% des adultes vivant aux États-Unis s’identifient comme LGBT. Le pourcentage de 13.7% de nos résultats est surement dû au grand nombre d’orientation sexuelle inconnue qui vient probablement fausser nos données.
+Quand on s'intéresse à l'orientation sexuelle, on constate que 57 gagnants ne sont pas hétérosexuels. Cela donne un pourcentage de 13.7% gagnants. Selon le Williams Institute, 5,5% des adultes vivant aux États-Unis s'identifient comme LGBT. Le pourcentage de 13.7% de nos résultats est surement dû au grand nombre d'orientation sexuelle inconnue qui vient probablement fausser nos données.
 """
 
-txt_fig2 = """Ce graphique s’intéresse à la relation nominée et gagnants. Nous voulions savoir si tous les nominés quelle que soit leur ethnie, leur âge, leur genre, leur religion ou leur orientation sexuelle, ont les mêmes chance de gagner. 
+txt_fig2 = """Ce graphique s'intéresse à la relation nominée et gagnants. Nous voulions savoir si tous les nominés quelle que soit leur ethnie, leur âge, leur genre, leur religion ou leur orientation sexuelle, ont les mêmes chance de gagner. 
 
 Pour chaque prix, il y a habituellement 5 nominés et un seul gagnant. **Les chances de gagner sont donc de 20%.**
 
-Par l’entremise de ce tableau, nous pouvons constater que **ce pourcentage est respecté à travers la plupart des catégories.** Il ne semble pas y avoir de biais qui pousse à favoriser certains nominés par rapport à d’autres. Par contre, cette figure (et les autres) montrent une réelle disparité dans les nominations, qui se repercute dans les gagnants.
+Par l'entremise de ce tableau, nous pouvons constater que **ce pourcentage est respecté à travers la plupart des catégories.** Il ne semble pas y avoir de biais qui pousse à favoriser certains nominés par rapport à d'autres. Par contre, cette figure (et les autres) montrent une réelle disparité dans les nominations, qui se repercute dans les gagnants.
 """
 
-txt_fig3 = """ Ce graphique montre l’évolution de la diversité au fil des ans. Le **nombre cumulé de gagnants (ou de nominés)** depuis la création des Oscars est représenté pour chaque catégorie. Un bouton permet de passer à une échelle logarithmique pour mieux visualiser les différences entre les catégories.
+txt_fig3 = """ Ce graphique montre l'évolution de la diversité au fil des ans. Le **nombre cumulé de gagnants (ou de nominés)** depuis la création des Oscars est représenté pour chaque catégorie. Un bouton permet de passer à une échelle logarithmique pour mieux visualiser les différences entre les catégories.
 
 En passant la souris sur les lignes, vous pouvez voir plus de détails pour une certaine cérémonie ainsi que quelques informations supplémentaires sur les gagnants ou les nominés.
 
@@ -104,7 +103,7 @@ Aussi, on peut voir que la **diversité de genre a aussi augmenté, mais pas aut
 # Texte pour la conclusion
 txt_conclusion = """À travers de tous ces tableaux, nous avons pu constater que la controverse #OscarSowhite était fondée. Par le passé, les gagnants et nominés des Oscars ont été en prédominance des personnes blanches.
 
-De nos jours, cette tendance semble tranquillement se renverser à cause de la création de normes d’inclusivité et de notre société plus inclusive à la diversité. Il faut également se demander si la discrimination dont a été accusé les Oscars est vraiment un problème des Oscars ou de l’industrie de cinéma en entier. 
+De nos jours, cette tendance semble tranquillement se renverser à cause de la création de normes d'inclusivité et de notre société plus inclusive à la diversité. Il faut également se demander si la discrimination dont a été accusé les Oscars est vraiment un problème des Oscars ou de l'industrie de cinéma en entier. 
 
 Malgré ces progrès, **le chemin vers une représentation équitable reste long**. Notre visualisation souligne l'importance de continuer à promouvoir la diversité et l'inclusion dans l'industrie cinématographique.
 """
@@ -140,7 +139,7 @@ app.layout = \
             # Espace entre les figures
             html.Div(style={'height': f'{espace_entre_figures}px', 'width': '100%', 'clear': 'both'}),
             
-            # Figure 2 - Mise à jour du titre
+            # Figure 2
             create_figure_section(
                 figure_id=2,
                 title='Des chances égales? Le parcours des nominés vers la victoire',
@@ -184,9 +183,8 @@ app.layout = \
             html.Div(style={'height': f'{espace_entre_figures}px', 'width': '100%', 'clear': 'both'}),
 
             
-            # Titre de la figure
-            html.H3("Conclusion", className='figure-title'),
             # Section de conclusion
+            html.H3("Conclusion", className='figure-title'),
             html.Div([
                 dcc.Markdown(txt_conclusion, className='figure-explanation')
             ], style={'width': '100%', 'margin': '0 auto 50px auto'}),
@@ -198,7 +196,7 @@ app.layout = \
         style={'width': '90%', 'margin': '0 auto', 'fontFamily': FONT, 'display': 'flex', 'flexDirection': 'column'}
         ),
         
-        # Ajout d'un footer pour les crédits du logo et des créateurs
+        # Footer avec crédits
         html.Footer([
             html.Div([
                 # Crédit du logo
@@ -224,10 +222,6 @@ dataloader.preprocess_data()
 df = dataloader.filter_data(1928, 2025)
 distribution_dict, total = dataloader.get_unique_distribution(df)
 
-# Figure 1
-
-# Figure 1
-
 # Fonctions utilitaires pour les callbacks
 def get_filtered_distribution(year_range, category, winner_filter, include_other=False):
     """Fonction utilitaire pour obtenir la distribution filtrée des données"""
@@ -248,7 +242,7 @@ def get_filtered_distribution(year_range, category, winner_filter, include_other
     return df, distribution_dict, options, selected_categories
 
 
-# Callback pour figure 1
+# Callbacks pour Figure 1
 @app.callback(
     Output('category-checklist_fig_1', 'options'),
     Output('category-checklist_fig_1', 'value'),
@@ -257,14 +251,12 @@ def get_filtered_distribution(year_range, category, winner_filter, include_other
     Input('winner-filter_fig_1', 'value'),
 )
 def update_category_dropdown_fig_1(year_range, category, winner_filter):
-    # Filtrer par gagnants uniquement ou tous les nominés selon la valeur du bouton radio
-    # TODO : Trier les catégories par nombre de représentants
+    # Filtrer par gagnants uniquement ou tous les nominés
     df, distribution_dict, options, selected = get_filtered_distribution(
         year_range, category, winner_filter, include_other=False
     )
     return options, selected
 
-# Callback pour changer le waffle-chart 
 @app.callback(
     Output('waffle-chart', 'figure'),
     Input('year-slider_fig_1', 'value'),
@@ -279,14 +271,11 @@ def update_waffle_chart(year_range, category, selected_categories, winner_filter
     distribution_dict, _ = dataloader.get_unique_distribution(df)
     wchart = figure_1.WaffleChart()
     class_num_dict = {key: distribution_dict[category][key] for key in selected_categories}
-    # sort the dictionary by value
+    # Trie du dictionnaire par valeur décroissante
     sorted_dict = dict(sorted(class_num_dict.items(), key=lambda item: item[1], reverse=True))
     return wchart.plot_scatter_waffle_chart(sorted_dict, df, category, height=hauteur_default_figure)
-    # raise ValueError({key: distribution_dict[category][key] for key in selected_categories})
-    # return wchart.plot_scatter_waffle_chart({key: distribution_dict[category][key] for key in selected_categories}, df, category)
 
-# Figure 3
-
+# Callbacks pour Figure 3
 @app.callback(
     Output('category-checklist_fig_3', 'options'),
     Output('category-checklist_fig_3', 'value'),
@@ -306,27 +295,25 @@ def update_category_dropdown_fig_3(year_range, category, winner_filter):
     Input('tabs_fig_3', 'value'),
     Input('category-checklist_fig_3', 'value'),
     Input('winner-filter_fig_3', 'value'),
-    Input('scale-selector_fig_3', 'value'),  # Nouvel input pour l'échelle
+    Input('scale-selector_fig_3', 'value'),
     allow_duplicate=True
 )
 def update_line_chart(year_range, category, selected_categories, winner_filter, scale_type):
     is_winner = None if winner_filter == 'all' else True
     df = dataloader.filter_data(year_range[0], year_range[1], is_winner=is_winner)
     
-    # Pour les données détaillées que nous allons afficher dans le hover
+    # Données détaillées pour l'affichage au survol
     hover_df = df.copy()
     
-    # Utiliser get_cumulative_yearly_distribution pour obtenir les données cumulatives
+    # Obtenir les données cumulatives
     distribution_dict = dataloader.get_cumulative_yearly_distribution(
         df[['Year_Ceremony', category]], 
         selected_categories,
         time_granularity=1
     )
     
-    # Initialize the line chart object
     line_chart = figure_3.LineChart()
     
-    # Render the line chart with cumulative data and selected scale type
     return line_chart.plot_line_chart(
         distribution_dict, 
         category, 
@@ -334,12 +321,10 @@ def update_line_chart(year_range, category, selected_categories, winner_filter, 
         hover_df, 
         cumulative=True, 
         scale_type=scale_type,
-        height=hauteur_default_figure  # Ajout du paramètre de hauteur
+        height=hauteur_default_figure
     )
 
-# Figure 4 
-
-# Callback pour figure 4
+# Callbacks pour Figure 4
 @app.callback(
     Output('category-checklist_fig_4', 'options'),
     Output('category-checklist_fig_4', 'value'),
@@ -353,20 +338,19 @@ def update_category_dropdown_fig_4(year_range, category, winner_filter):
     )
     return options, selected
 
-# Callback pour le stacked area chart
 @app.callback(
     Output('stacked-area-chart', 'figure'),
     Input('year-slider_fig_4', 'value'),
     Input('tabs_fig_4', 'value'),
     Input('category-checklist_fig_4', 'value'),
     Input('winner-filter_fig_4', 'value'),
-    Input('granularity-selector_fig_4', 'value'),  # Nouveau input pour la granularité
+    Input('granularity-selector_fig_4', 'value'),
     allow_duplicate=True
 )
 def update_stacked_area_chart(year_range, category, selected_categories, winner_filter, time_granularity):
     is_winner = None if winner_filter == 'all' else True
     df = dataloader.filter_data(year_range[0], year_range[1], is_winner=is_winner)
-    # On ne garde que l'année et la colonne de la catégorie
+    # Extraction de l'année et de la catégorie
     distribution_dict = dataloader.get_yearly_distribution(
         df[['Year_Ceremony', category]], 
         selected_categories,
@@ -374,20 +358,20 @@ def update_stacked_area_chart(year_range, category, selected_categories, winner_
     )
     
     stacked_chart = figure_4.StackedAreaChart()
-    # Spécifier la hauteur souhaitée
     fig = stacked_chart.plot_stacked_area_chart(
         distribution_dict,
-        height=hauteur_default_figure  # Hauteur en pixels
+        height=hauteur_default_figure
     )
     
-    # Ajuster la mise en page selon la taille de l'écran
+    # Configuration responsive
     fig.update_layout(
         autosize=True,
-        margin=dict(l=30, r=30, t=30, b=50)  # Marges réduites pour les petits écrans
+        margin=dict(l=30, r=30, t=30, b=50)
     )
     
     return fig
 
+# Callbacks pour Figure 2
 @app.callback(
     Output('category-checklist_fig_2', 'options'),
     Output('category-checklist_fig_2', 'value'),
@@ -407,8 +391,8 @@ def update_category_dropdown_fig_2(year_range, category):
     Input('category-checklist_fig_2', 'value')
 )
 def update_sankey_chart(demographic_column, year_range, selected_categories):
-    #is_winner = None if winner_filter == 'all' else True
-    df = dataloader.filter_data(year_range[0], year_range[1], is_winner=None)  # on prend tout pour comparer
+    # Inclure tous les nominés pour la comparaison
+    df = dataloader.filter_data(year_range[0], year_range[1], is_winner=None)
     if selected_categories:
         df = df[df[demographic_column].isin(selected_categories)]
     sankey = figure_2.SankeyDemographicChart()

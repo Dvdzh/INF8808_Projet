@@ -1,5 +1,4 @@
 import math 
-
 import numpy as np
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
@@ -23,60 +22,26 @@ class WaffleChart():
         z = np.array(z).reshape(n_rows, n_cols)
         return z
     
-    # def plot_waffle_chart(self, distribution, total):
-
-    #     fig = make_subplots(rows=1, cols=len(distribution), 
-    #                 shared_xaxes=True, shared_yaxes=True,
-    #                 horizontal_spacing=0.01, vertical_spacing=0.01)
-
-    #     color_scale_dict = generate_color_dict()  # Use predefined colors
-
-    #     # Remove this if you want to use the same maximum for all subplots
-    #     maximum = max(distribution.values())
-
-    #     for i, id in enumerate(distribution):
-
-    #         color = color_scale_dict[id]
-            
-    #         # Change this if you want to use the same maximum for all subplots
-    #         z = self._get_z_matrix(maximum, distribution[id])
-    #         # z = self._get_z_matrix(total, distribution[id])
-
-    #         fig.add_trace(
-    #             go.Heatmap(z=z, 
-    #                     colorscale=[[0, TRANSPARENT], [0.5, TRANSPARENT], [1, color]],
-    #                     xgap=3, ygap=3,
-    #                     showscale=False,
-    #                     ),
-    #                     row = 1, col = i+1,
-    #                     )
-
-    #     fig.update_layout(height=800, plot_bgcolor=TRANSPARENT, paper_bgcolor=TRANSPARENT)
-
-    #     for col in range(1, len(distribution)+1):
-    #         fig.update_xaxes(showticklabels=False, showgrid=False, zeroline=False, row=1, col=col)
-    #         fig.update_yaxes(showticklabels=False, showgrid=False, zeroline=False, row=1, col=col)
-
-    #     fig.update_layout(
-    #         xaxis=dict(showgrid=False),
-    #         yaxis=dict(showgrid=False)
-    #     )
-
-    #     return fig 
-    
-    
     def plot_scatter_waffle_chart(self, distribution, df, category, font_size=16, font_family='Jost', height=700):
-
-        # distribution = distribution_dict[category]
+        """
+        Génère un graphique en gaufre avec des points représentant les individus.
+        
+        Args:
+            distribution: Dictionnaire contenant le nombre d'individus par catégorie
+            df: DataFrame avec les données complètes
+            category: Colonne à utiliser pour le regroupement
+            font_size: Taille de police pour les annotations
+            font_family: Police à utiliser
+            height: Hauteur du graphique en pixels
+            
+        Returns:
+            Figure Plotly
+        """
         fig = make_subplots(rows=1, cols=len(distribution),
                             shared_yaxes=True, shared_xaxes=True,
                             horizontal_spacing=0.01, vertical_spacing=0.01)
 
         color_scale_dict = generate_color_dict(distribution.keys(), colorscale_name='Oranges')
-
-        # scatter plot disque
-        fig = make_subplots(rows=1, cols=len(distribution), 
-                            horizontal_spacing=0.01, vertical_spacing=0.01)
 
         y_max = math.ceil(max(distribution.values()) // 10) + 1
 
@@ -92,8 +57,8 @@ class WaffleChart():
                 mode='markers',
                 marker=dict(
                     size=min(400/y_max, 20),
-                    color=[color_scale_dict[key]] * len(sub_df),  # Assign unique color to each marker
-                    symbol='circle'  # Change to 'circle' if you want filled markers
+                    color=[color_scale_dict[key]] * len(sub_df),
+                    symbol='circle'
                 ),
                 customdata=sub_df[['Name', 'Category', 'Film', 'Year_Ceremony']],
                 hovertemplate='Name: %{customdata[0]}<br>Category: %{customdata[1]}<br>Film: %{customdata[2]}<br>Year: %{customdata[3]} <extra></extra>'
@@ -103,17 +68,13 @@ class WaffleChart():
                             text=key, showarrow=False, 
                                 font_size=font_size, font_family=font_family)
 
-            # xlim et ylim 
+            # Configuration des limites des axes
             fig.update_xaxes(range=[-1, 10], row=1, col=i+1)
             fig.update_yaxes(range=[-3, y_max+0.5], row=1, col=i+1)
-
-            # remove axis
             fig.update_xaxes(visible=False, row=1, col=i+1)
             fig.update_yaxes(visible=False, row=1, col=i+1)
 
-            # remove legend
             fig.update_layout(showlegend=False)
-
             fig.update_layout(
                 hoverlabel=dict(
                     bgcolor="white",
@@ -123,14 +84,14 @@ class WaffleChart():
             )
 
         fig.update_layout(
-            height=height,  # Utiliser la hauteur passée en paramètre
-            autosize=False,  # Désactiver l'autosize pour appliquer la hauteur fixe
+            height=height,
+            autosize=False,
             plot_bgcolor=TRANSPARENT, 
             paper_bgcolor=TRANSPARENT,
             margin=dict(l=0, r=0, t=0, b=10)
         )
 
-        return fig 
+        return fig
     
     def _get_hovertemplate(self, distribution):
         hovertemplate = []

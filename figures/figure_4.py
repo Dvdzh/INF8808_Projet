@@ -16,27 +16,21 @@ class StackedAreaChart():
 
     def plot_stacked_area_chart(self, data, height=700):
         """
-        Cette fonction génère un graphique en aires empilées à partir des données fournies.
-        Exemple de données:
-        {1928: {'White': 10, 'Black': 0, 'Hispanic': 0, 'Asian': 0, 'Multiracial': 0, 'Other': 0}, 
-        1929: {'White': 17, 'Black': 0, 'Hispanic': 0, 'Asian': 0, 'Multiracial': 0, 'Other': 0}, 
-        1930: {'White': 17, 'Black': 0, 'Hispanic': 0, 'Asian': 0, 'Multiracial': 0, 'Other': 0}}
-
-Args:
+        Génère un graphique en aires empilées à partir des données fournies.
+        
+        Args:
             data: Dictionnaire de données par année et catégorie
-            height: Hauteur du graphique (défaut: 700px)
-
-        Retourne la figure
+            height: Hauteur du graphique en pixels
+            
+        Returns:
+            Figure Plotly
         """
-
         # Convertir les données en DataFrame
         df = pd.DataFrame(data).T.fillna(0)
         df.index = df.index.astype(str)
 
         # Normaliser les valeurs
         df_normalized = df.div(df.sum(axis=1), axis=0)
-        
-        # Convertir en pourcentage (multiplier par 100)
         df_percentage = df_normalized * 100
         
         # Obtenir les couleurs pour chaque catégorie
@@ -46,7 +40,7 @@ Args:
         # Créer une figure
         fig = go.Figure()
         
-        # Ajouter chaque catégorie comme une série d'aires empilées
+        # Ajouter chaque catégorie comme aire empilée
         for i, col in enumerate(df_percentage.columns):
             fig.add_trace(go.Scatter(
                 x=df_percentage.index,
@@ -56,42 +50,39 @@ Args:
                 name=col,
                 line=dict(width=0),
                 fillcolor=color_sequence[i],
-                hoverinfo='skip'  # Désactiver le hover standard
+                hoverinfo='skip'
             ))
         
-        # Créer textes personnalisés pour le hover
+        # Textes personnalisés pour les infobulles
         hover_texts = []
         for year in df_percentage.index:
             text = f"Année : {year}<br>"
             for col in df_percentage.columns:
                 percentage = df_percentage.loc[year, col]
-                absolute = df.loc[year, col]  # Valeur absolue
+                absolute = df.loc[year, col]
                 text += f"{col} : {percentage:.1f}% ({int(absolute)})<br>"
             hover_texts.append(text)
         
-        # Ajouter une trace invisible avec le hover personnalisé
+        # Trace invisible pour les infobulles personnalisées
         fig.add_trace(go.Scatter(
             x=df_percentage.index,
-            y=[50] * len(df_percentage),  # Au milieu du graphique
+            y=[50] * len(df_percentage),
             mode='markers',
-            marker=dict(opacity=0),  # Invisible
+            marker=dict(opacity=0),
             hoverinfo='text',
             hovertext=hover_texts,
             showlegend=False,
         ))
         
-        # Configurer le layout
+        # Configuration du graphique
         fig.update_layout(
-            # Enlever le titre
             title=None,
-            # Définir une hauteur fixe
             height=height,
             autosize=False,
             xaxis=dict(
-                # Enlever le "Year"
                 title=None,
                 showgrid=False,
-                showspikes=True,  # Afficher une ligne verticale au survol
+                showspikes=True,
                 spikecolor='black',
                 spikethickness=1,
                 spikedash='solid',
@@ -100,10 +91,9 @@ Args:
             yaxis=dict(
                 title={'text': 'Proportion (%)', 'font': {'family': 'Jost', 'size': 16}},
                 showgrid=False,
-                # Correction du format pour afficher correctement 0-100%
-                tickformat='.0f',  # Format sans % et sans multiplier par 100
-                ticksuffix='%',    # Ajouter le symbole % après chaque valeur
-                range=[0, 100],    # Garder l'échelle de 0 à 100
+                tickformat='.0f',
+                ticksuffix='%',
+                range=[0, 100],
                 tickfont={'family': 'Jost'}
             ),
             legend_title={
@@ -111,8 +101,8 @@ Args:
                 'font': {'family': 'Jost', 'size': 16}
             },
             legend={'font': {'family': 'Jost', 'size': 14}},
-            hovermode='x',  # Hover mode sur l'axe x
-            hoverdistance=100,  # Distance pour activer le hover
+            hovermode='x',
+            hoverdistance=100,
             hoverlabel=dict(
                 bgcolor='white', 
                 font_size=16,
@@ -120,8 +110,8 @@ Args:
             ),
             plot_bgcolor=TRANSPARENT,
             paper_bgcolor=TRANSPARENT,
-            font={'family': 'Jost'},  # Police par défaut pour tout le graphique
-            margin=dict(l=50, r=50, t=30, b=50)  # Ajuster les marges pour maximiser l'espace
+            font={'family': 'Jost'},
+            margin=dict(l=50, r=50, t=30, b=50)
         )
         
         return fig

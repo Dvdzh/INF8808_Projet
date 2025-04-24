@@ -18,7 +18,7 @@ def create_figure_section(figure_id, title, graph_id, has_checklist=True, has_co
     Returns:
         Une section de figure complète avec les contrôles
     """
-    # Ajouter un sélecteur de granularité temporelle spécifiquement pour la figure 4
+    # Sélecteur de granularité temporelle (figure 4 uniquement)
     granularity_selector = html.Div([
         html.P("Granularité temporelle:"),
         dcc.RadioItems(
@@ -34,7 +34,7 @@ def create_figure_section(figure_id, title, graph_id, has_checklist=True, has_co
         )
     ], className='control-item', style={'padding': '10px'}) if figure_id == 4 else None
     
-    # Élément pour les filtres (gagnants/nominés)
+    # Filtres gagnants/nominés
     winners_filter = html.Div([
         html.P('Utilisez ces filtres pour visualiser plus de données:'),
         dcc.RadioItems(
@@ -49,7 +49,7 @@ def create_figure_section(figure_id, title, graph_id, has_checklist=True, has_co
         )
     ], className='control-item', style={'padding': '10px'})
     
-    # Élément pour la checklist (optionnel)
+    # Checklist des catégories
     checklist = html.Div([
         html.P('Filtres:'),
         dcc.Checklist(
@@ -61,7 +61,7 @@ def create_figure_section(figure_id, title, graph_id, has_checklist=True, has_co
         )
     ], className='control-item', style={'padding': '10px'}) if has_checklist else None
     
-    # Élément pour le slider d'années
+    # Slider d'années
     year_slider = html.Div([
         html.P('Années:'),
         dcc.RangeSlider(
@@ -75,7 +75,7 @@ def create_figure_section(figure_id, title, graph_id, has_checklist=True, has_co
         )
     ], className='control-item year-slider', style={'padding': '10px'})
     
-    # Élément pour le sélecteur d'échelle (figure 3 uniquement)
+    # Sélecteur d'échelle (figure 3 uniquement)
     scale_selector = html.Div([
         html.P('Échelle:'),
         dcc.RadioItems(
@@ -90,7 +90,7 @@ def create_figure_section(figure_id, title, graph_id, has_checklist=True, has_co
         )
     ], className='control-item', style={'padding': '10px'}) if figure_id == 3 else None
     
-    # Assembler les contrôles actifs dans une liste
+    # Assembler les contrôles actifs
     if has_control_elements:
         control_elements = [winners_filter]
     else:
@@ -103,19 +103,18 @@ def create_figure_section(figure_id, title, graph_id, has_checklist=True, has_co
     if scale_selector:
         control_elements.append(scale_selector)
     
-    # Conteneur des contrôles avec classe pour le responsive
+    # Conteneur des contrôles
     controls = html.Div(
         control_elements,
         className='controls-container',
         style={'margin': '20px 0'}
     )
     
-    # Remplacer la section de contrôles existante par notre nouvelle version
     return html.Div(children=[
         # Titre de la figure
         html.H3(title, className='figure-title'),
         
-        # Explication de la figure (si fournie) - Remplacer html.P par dcc.Markdown
+        # Explication de la figure
         dcc.Markdown(explanation_text, className='figure-explanation') if explanation_text else None,
 
         # Contenu principal
@@ -137,7 +136,7 @@ def create_figure_section(figure_id, title, graph_id, has_checklist=True, has_co
             # Graphique
             dcc.Graph(id=graph_id, style={'width': '100%', 'margin': '40px 0'}),
             
-            # Controls
+            # Contrôles
             controls,
             
         ], style={'width': '100%', 'margin': '0 auto'}),
