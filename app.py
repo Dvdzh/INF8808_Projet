@@ -273,7 +273,7 @@ def update_waffle_chart(year_range, category, selected_categories, winner_filter
     class_num_dict = {key: distribution_dict[category][key] for key in selected_categories}
     # Trie du dictionnaire par valeur décroissante
     sorted_dict = dict(sorted(class_num_dict.items(), key=lambda item: item[1], reverse=True))
-    return wchart.plot_scatter_waffle_chart(sorted_dict, df, category, height=hauteur_default_figure)
+    return wchart.plot_scatter_waffle_chart(sorted_dict, df, category, height=hauteur_default_figure, is_winner=is_winner)
 
 # Callbacks pour Figure 3
 @app.callback(
