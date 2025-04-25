@@ -53,16 +53,16 @@ class WaffleChart():
         layout_by_winner = {
             True: {
                 'Race or Ethnicity': {'x_size': 11, 'y_size': 39, 'max_len': 425, 'cols': 5, 'size': 15},
-                'Gender': {'x_size': 13, 'y_size': 22, 'max_len': 284, 'cols': 2, 'size': 15},
-                'Religion': {'x_size': 9, 'y_size': 34, 'max_len': 302, 'cols': 5, 'size': 15},
-                'Age': {'x_size': 7, 'y_size': 22, 'max_len': 149, 'cols': 5, 'size': 20},
+                'Gender': {'x_size': 16, 'y_size': 17, 'max_len': 284, 'cols': 2, 'size': 28},
+                'Religion': {'x_size': 12, 'y_size': 26, 'max_len': 302, 'cols': 5, 'size': 17},
+                'Age': {'x_size': 7, 'y_size': 22, 'max_len': 149, 'cols': 5, 'size': 25},
                 'Sexual orientation': {'x_size': 11, 'y_size': 38, 'max_len': 417, 'cols': 5, 'size': 15}
             },
             None: {
                 'Race or Ethnicity': {'x_size': 22, 'y_size': 98, 'max_len': 2140, 'cols': 5, 'size': 15},
-                'Gender': {'x_size': 28, 'y_size': 50, 'max_len': 1395, 'cols': 2, 'size': 9},
-                'Religion': {'x_size': 19, 'y_size': 81, 'max_len': 1534, 'cols': 5, 'size': 15},
-                'Age': {'x_size': 13, 'y_size': 55, 'max_len': 712, 'cols': 5, 'size': 15},
+                'Gender': {'x_size': 32, 'y_size': 44, 'max_len': 1395, 'cols': 2, 'size': 12},
+                'Religion': {'x_size': 21, 'y_size': 74, 'max_len': 1534, 'cols': 5, 'size': 10},
+                'Age': {'x_size': 15, 'y_size': 50, 'max_len': 712, 'cols': 5, 'size': 12},
                 'Sexual orientation': {'x_size': 22, 'y_size': 92, 'max_len': 2017, 'cols': 5, 'size': 15}
             }
         }
@@ -123,7 +123,7 @@ class WaffleChart():
             ), row=1, col=i+1)
 
             # Axis limits
-            fig.update_xaxes(range=[-0.1, 1.05], row=1, col=i+1)
+            fig.update_xaxes(range=[-0.1, 1.1], row=1, col=i+1)
             fig.update_yaxes(range=[-0.1, 1.05], row=1, col=i+1)
 
             # Supprimer la grille 
@@ -138,7 +138,7 @@ class WaffleChart():
         # Layout de la figure
         fig.update_layout(
             height=height,
-            width=len(distribution) * 275,
+            # width=min(1300, len(distribution) * 275),
             autosize=False,
             plot_bgcolor=TRANSPARENT, 
             paper_bgcolor=TRANSPARENT,
